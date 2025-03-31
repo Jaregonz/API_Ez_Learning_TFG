@@ -29,6 +29,13 @@ public class Usuario {
     @Column(nullable = true)
     private String nivel;
 
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Usuario> alumnos;
+
+    @ManyToOne
+    @JoinColumn(name = "id_profesor", nullable = true)
+    private Usuario profesor;
+
     @Column(nullable = false)
     private String rol;
 
@@ -38,7 +45,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Test> tests;
 
-    public Usuario(String username, String correoElectronico, String password, String nombre, String apellidos, String nivel, String rol, String imagenPerfil) {
+    public Usuario(String username, String correoElectronico, String password, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Usuario profesor) {
         this.username = username;
         this.correoElectronico = correoElectronico;
         this.password = password;
@@ -47,6 +54,7 @@ public class Usuario {
         this.nivel = nivel;
         this.rol = rol;
         this.imagenPerfil = imagenPerfil;
+        this.profesor = profesor;
     }
 
     public Usuario() {

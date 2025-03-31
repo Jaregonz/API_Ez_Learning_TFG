@@ -9,11 +9,15 @@ import com.es.API_REST_Ez_Learning.repository.UsuarioRepository;
 import com.es.API_REST_Ez_Learning.util.UsuarioMapper;
 import com.es.API_REST_Ez_Learning.util.Validators;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -21,6 +25,8 @@ public class UsuarioService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,7 +58,7 @@ public class UsuarioService implements UserDetailsService {
             throw new ConflictException("El nombre de usuario ya existe");
         }
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        usuarioRepository.save(UsuarioMapper.dtoRegistroToEntity(usuario));
+        usuarioRepository.save(usuarioMapper.dtoRegistroToEntity(usuario));
         return usuario;
     }
 
@@ -122,6 +128,18 @@ public class UsuarioService implements UserDetailsService {
             usuario.setImagenPerfil(usuarioModifyDTO.getImagenPerfil());
         }
         return UsuarioMapper.entityToDTO(this.usuarioRepository.save(usuario));
+    }
+
+    public List<UsuarioDTO> getAlumnos(Authentication authentication) {
+        Usuario profesor = usuarioRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado"));
+
+        if (!profesor.getRol().equalsIgnoreCase("profesor")) {
+            throw new AccessDeniedException("No tienes permiso para ver esta información");
+        }
+
+        List<Usuario> alumnos = usuarioRepository.findByProfesorId(profesor.getId());
+        return alumnos.stream().map(UsuarioMapper::entityToDTO).collect(Collectors.toList());
     }
 }
 

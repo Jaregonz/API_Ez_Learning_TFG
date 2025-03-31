@@ -1,5 +1,8 @@
 package com.es.API_REST_Ez_Learning.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UsuarioRegistroDTO {
     private String username;
     private String password;
@@ -9,8 +12,9 @@ public class UsuarioRegistroDTO {
     private String nivel;
     private String rol;
     private String imagenPerfil;
+    private Long idProfesor;
 
-    public UsuarioRegistroDTO(String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil) {
+    public UsuarioRegistroDTO(String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Long idProfesor) {
         this.username = username;
         this.password = password;
         this.correoElectronico = correoElectronico;
@@ -19,6 +23,7 @@ public class UsuarioRegistroDTO {
         this.nivel = nivel;
         this.rol = rol;
         this.imagenPerfil = imagenPerfil;
+        this.idProfesor = idProfesor;
     }
 
     public String getUsername() {
@@ -83,5 +88,13 @@ public class UsuarioRegistroDTO {
 
     public void setImagenPerfil(String imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
+    }
+
+    public Long getIdProfesor() {
+        return idProfesor;
+    }
+
+    public void setIdProfesor(Long idProfesor) {
+        this.idProfesor = idProfesor;
     }
 }
