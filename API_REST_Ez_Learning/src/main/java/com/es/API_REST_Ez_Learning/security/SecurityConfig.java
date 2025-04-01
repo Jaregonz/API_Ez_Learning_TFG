@@ -48,9 +48,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
-                .csrf(csrf -> csrf.disable()) // Deshabilitamos "Cross-Site Request Forgery" (CSRF) (No lo trataremos en este ciclo)
-                .authorizeHttpRequests(auth -> auth // Filtros para securizar diferentes endpoints de la aplicación
-                                .requestMatchers("/usuarios/login", "/usuarios/register").permitAll() // Filtro que deja pasar todas las peticiones que vayan a los endpoints que definamos
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/usuarios/login", "/usuarios/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/usuarios/{nombre}").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("PROFESOR")
@@ -60,11 +60,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/tests/{id}").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.DELETE, "/tests/{id}").hasRole("PROFESOR")
                                 .requestMatchers("/preguntas").hasRole("PROFESOR")
-//                        .requestMatchers("/productos/**").authenticated()
-
-                                .anyRequest().authenticated() // Para el resto de peticiones, el usuario debe estar autenticado
+                                .requestMatchers(HttpMethod.GET, "/puntuaciones/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/puntuaciones/{id}").hasRole("PROFESOR")
+                                .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())) // Establecemos el que el control de autenticación se realice por JWT
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .build();

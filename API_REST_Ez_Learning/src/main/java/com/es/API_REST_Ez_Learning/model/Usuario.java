@@ -2,6 +2,7 @@ package com.es.API_REST_Ez_Learning.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,9 @@ public class Usuario {
     @Column(nullable = false)
     private String apellidos;
 
+    @Column(nullable = false)
+    private Date fechaNacimiento;
+
     @Column(nullable = true)
     private String nivel;
 
@@ -45,7 +49,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Test> tests;
 
-    public Usuario(String username, String correoElectronico, String password, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Usuario profesor) {
+    public Usuario(String username, String correoElectronico, String password, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Usuario profesor, Date fechaNacimiento) {
         this.username = username;
         this.correoElectronico = correoElectronico;
         this.password = password;
@@ -55,6 +59,7 @@ public class Usuario {
         this.rol = rol;
         this.imagenPerfil = imagenPerfil;
         this.profesor = profesor;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public Usuario() {
@@ -138,5 +143,29 @@ public class Usuario {
 
     public void setTests(List<Test> tests) {
         this.tests = tests;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public List<Usuario> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<Usuario> alumnos) {
+        this.alumnos = alumnos;
+    }
+
+    public Usuario getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Usuario profesor) {
+        this.profesor = profesor;
     }
 }

@@ -7,6 +7,10 @@ import com.es.API_REST_Ez_Learning.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 @Component
 public class UsuarioMapper {
     @Autowired
@@ -18,6 +22,8 @@ public class UsuarioMapper {
                 profesor = this.usuarioRepository.findById(usuarioRegistroDTO.getIdProfesor()).get();
             }
         }
+        LocalDate localDate = LocalDate.parse(usuarioRegistroDTO.getFechaNacimiento());
+        Date fechaNacimiento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return new Usuario(
                 usuarioRegistroDTO.getUsername(),
                 usuarioRegistroDTO.getCorreoElectronico(),
@@ -27,7 +33,9 @@ public class UsuarioMapper {
                 usuarioRegistroDTO.getNivel(),
                 usuarioRegistroDTO.getRol(),
                 usuarioRegistroDTO.getImagenPerfil(),
-                profesor);
+                profesor,
+                fechaNacimiento);
+            //ESTO SE HA QUEDADO EN AÑADIR LA FECHA DE NACIMIENTO MAÑANA SE SIGUE
     }
     public static UsuarioDTO entityToDTO (Usuario usuario){
         return new UsuarioDTO(
