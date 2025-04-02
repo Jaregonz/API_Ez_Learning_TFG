@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,6 +129,11 @@ public class UsuarioService implements UserDetailsService {
         }
         if(usuarioModifyDTO.getImagenPerfil() != null ){
             usuario.setImagenPerfil(usuarioModifyDTO.getImagenPerfil());
+        }
+        if(usuarioModifyDTO.getFechaNacimiento() != null ){
+            LocalDate localDate = LocalDate.parse(usuarioModifyDTO.getFechaNacimiento());
+            Date fechaNacimiento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            usuario.setFechaNacimiento(fechaNacimiento);
         }
         return UsuarioMapper.entityToDTO(this.usuarioRepository.save(usuario));
     }

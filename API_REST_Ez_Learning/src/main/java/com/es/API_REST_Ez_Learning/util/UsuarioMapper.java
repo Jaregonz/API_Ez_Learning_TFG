@@ -35,9 +35,12 @@ public class UsuarioMapper {
                 usuarioRegistroDTO.getImagenPerfil(),
                 profesor,
                 fechaNacimiento);
-            //ESTO SE HA QUEDADO EN AÑADIR LA FECHA DE NACIMIENTO MAÑANA SE SIGUE
     }
     public static UsuarioDTO entityToDTO (Usuario usuario){
+        Long idProfesor = null;
+        if(usuario.getProfesor() != null){
+            idProfesor = usuario.getProfesor().getId();
+        }
         return new UsuarioDTO(
                 usuario.getId(),
                 usuario.getUsername(),
@@ -47,6 +50,8 @@ public class UsuarioMapper {
                 usuario.getApellidos(),
                 usuario.getNivel(),
                 usuario.getRol(),
-                usuario.getImagenPerfil());
+                usuario.getImagenPerfil(),
+                idProfesor,
+                usuario.getFechaNacimiento().toString());
     }
 }

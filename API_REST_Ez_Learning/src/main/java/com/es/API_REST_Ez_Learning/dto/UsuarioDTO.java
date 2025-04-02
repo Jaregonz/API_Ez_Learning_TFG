@@ -10,6 +10,8 @@ public class UsuarioDTO {
         private String nivel;
         private String rol;
         private String imagenPerfil;
+        private Long idProfesor;
+        private String fechaNacimiento;
 
         public UsuarioDTO(Long id, String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil) {
             this.id = id;
@@ -22,6 +24,20 @@ public class UsuarioDTO {
             this.rol = rol;
             this.imagenPerfil = imagenPerfil;
         }
+
+    public UsuarioDTO(Long id, String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Long idProfesor, String fechaNacimiento) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.correoElectronico = correoElectronico;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.nivel = nivel;
+        this.rol = rol;
+        this.imagenPerfil = imagenPerfil;
+        this.idProfesor = idProfesor;
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
         public String getUsername() {
             return username;
@@ -93,6 +109,19 @@ public class UsuarioDTO {
 
         public void setId(Long id) {
             this.id = id;
+        }
+
+        public Long getIdProfesor() {
+            return idProfesor;
+        }
+        public void setIdProfesor(Long idProfesor) {
+            this.idProfesor = idProfesor;
+        }
+        public String getFechaNacimiento() {
+            return fechaNacimiento;
+        }
+        public void setFechaNacimiento(String fechaNacimiento) {
+            this.fechaNacimiento = fechaNacimiento;
         }
 }
 

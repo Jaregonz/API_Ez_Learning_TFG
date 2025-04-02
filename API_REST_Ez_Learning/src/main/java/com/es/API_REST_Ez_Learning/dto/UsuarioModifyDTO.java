@@ -8,8 +8,9 @@ public class UsuarioModifyDTO {
     private String nivel;
     private String rol;
     private String imagenPerfil;
+    private String fechaNacimiento;
 
-    public UsuarioModifyDTO(String username, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil) {
+    public UsuarioModifyDTO(String username, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, String fechaNacimiento) {
         this.username = username;
         this.correoElectronico = correoElectronico;
         this.nombre = nombre;
@@ -17,6 +18,7 @@ public class UsuarioModifyDTO {
         this.nivel = nivel;
         this.rol = rol;
         this.imagenPerfil = imagenPerfil;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getUsername() {
@@ -74,6 +76,13 @@ public class UsuarioModifyDTO {
 
     public void setImagenPerfil(String imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 }
 
