@@ -22,7 +22,7 @@ public class TestController {
         return new ResponseEntity<>(this.testService.insertTest(testDTO,authentication), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity<List<TestDTO>> getTests(Authentication authentication){
         return new ResponseEntity<List<TestDTO>>(this.testService.getTests(authentication),HttpStatus.OK);
     }

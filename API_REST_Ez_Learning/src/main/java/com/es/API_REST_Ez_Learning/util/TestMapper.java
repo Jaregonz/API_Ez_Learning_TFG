@@ -58,12 +58,13 @@ public class TestMapper {
 
     }
     public static List<TestDTO> filtrarPorNivel(String nivelMinimo, List<TestDTO> testsDTO) {
+        String nivelMinimoAjustado = (nivelMinimo == null) ? "C1" : nivelMinimo;
         if (!ORDEN_NIVELES.contains(nivelMinimo)) {
             throw new IllegalArgumentException("Nivel mínimo inválido: " + nivelMinimo);
         }
 
         return testsDTO.stream()
-                .filter(objeto -> ORDEN_NIVELES.indexOf(objeto.getDificultad()) <= ORDEN_NIVELES.indexOf(nivelMinimo))
+                .filter(objeto -> ORDEN_NIVELES.indexOf(objeto.getDificultad()) <= ORDEN_NIVELES.indexOf(nivelMinimoAjustado))
                 .collect(Collectors.toList());
     }
 
