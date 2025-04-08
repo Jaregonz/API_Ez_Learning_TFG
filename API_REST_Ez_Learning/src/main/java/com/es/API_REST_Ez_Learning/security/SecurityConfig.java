@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/usuarios/login", "/usuarios/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/usuarios/{nombre}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/usuarios/perfil-usuario").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.POST, "/tests/").hasRole("PROFESOR")

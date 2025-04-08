@@ -52,6 +52,15 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/perfil-usuario")
+    public ResponseEntity<UsuarioDTO> getUsuarioAutenticado(Authentication authentication) {
+        String role = authentication.getAuthorities().stream().findFirst().orElseThrow().getAuthority();
+        String username = authentication.getName();
+
+        UsuarioDTO usuarioDTO = this.usuarioService.getByUsername(role, username, username);
+        return ResponseEntity.ok(usuarioDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<UsuarioDTO> deleteUsuario(@PathVariable String id){
         return new ResponseEntity<>(this.usuarioService.deleteUser(id), HttpStatus.NO_CONTENT);

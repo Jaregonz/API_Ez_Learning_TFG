@@ -43,5 +43,14 @@ public class TestController {
         return new ResponseEntity<TestDTO>(this.testService.deleteTest(id),HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/filtrar-tests")
+    public ResponseEntity<List<TestDTO>> getFilteredTests(
+                                                           @RequestParam(required = false) String titulo,
+                                                           @RequestParam(required = false) String dificultad,
+                                                           @RequestParam(required = false) String tipo) {
+        return new ResponseEntity<List<TestDTO>>(this.testService.filtrarTests(titulo,dificultad,tipo),HttpStatus.OK);
+    }
+
+
 
 }

@@ -14,9 +14,11 @@ import com.es.API_REST_Ez_Learning.model.Usuario;
 import com.es.API_REST_Ez_Learning.repository.PreguntaRepository;
 import com.es.API_REST_Ez_Learning.repository.TestRepository;
 import com.es.API_REST_Ez_Learning.repository.UsuarioRepository;
+import com.es.API_REST_Ez_Learning.specifications.TestSpecification;
 import com.es.API_REST_Ez_Learning.util.PreguntaMapper;
 import com.es.API_REST_Ez_Learning.util.TestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -178,8 +180,16 @@ public class TestService {
             this.testRepository.delete(test.get());
             return testMapper.entityToDTO(test.get());
         }else{
-            //ERROR BAD REQUEST
             throw new ValidationException("El id no es válido");
         }
+    }
+
+    public List<TestDTO> filtrarTests(String titulo, String dificultad, String tipo) {
+        Specification<Test> spec = TestSpecification.filtrarTests(titulo, dificultad, tipo);
+        List<TestDTO> testsFiltradosDTO = new ArrayList<>();
+        for (Test test : testRepository.findAll(spec)) {
+            testsFiltradosDTO.add(testMapper.entityToDTO(test));
+        }
+        return testsFiltradosDTO;
     }
 }

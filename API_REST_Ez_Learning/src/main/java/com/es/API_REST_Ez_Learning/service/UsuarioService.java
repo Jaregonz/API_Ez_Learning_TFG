@@ -79,7 +79,7 @@ public class UsuarioService implements UserDetailsService {
                        }
                }
            }else{
-               if (usuario.get().getNombre().equals(name)){
+               if (usuario.get().getCorreoElectronico().equals(username)){
                    return UsuarioMapper.entityToDTO(usuario.get());
                }else{
                    throw new NotAuthorizationException("No tienes los permisos para esta acción"); //ERROR UNAUTHORIZED;
