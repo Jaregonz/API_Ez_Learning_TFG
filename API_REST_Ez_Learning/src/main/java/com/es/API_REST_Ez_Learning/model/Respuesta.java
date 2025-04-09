@@ -9,8 +9,8 @@ public class Respuesta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pregunta_id")
+    @ManyToOne
+    @JoinColumn(name = "id_pregunta")
     private Pregunta pregunta;
 
     @Column(nullable = false)

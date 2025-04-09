@@ -8,9 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RespuestaMapper {
-    @Mapping(target = "pregunta.id", source = "preguntaId")
     Respuesta dtoToEntity(RespuestaDTO respuestaDTO);
-
-    @Mapping(target = "preguntaId", source = "pregunta.id")
     RespuestaDTO entityToDto(Respuesta respuesta);
 }

@@ -12,6 +12,7 @@ import com.es.API_REST_Ez_Learning.model.Respuesta;
 import com.es.API_REST_Ez_Learning.model.Test;
 import com.es.API_REST_Ez_Learning.model.Usuario;
 import com.es.API_REST_Ez_Learning.repository.PreguntaRepository;
+import com.es.API_REST_Ez_Learning.repository.RespuestaRepository;
 import com.es.API_REST_Ez_Learning.repository.TestRepository;
 import com.es.API_REST_Ez_Learning.repository.UsuarioRepository;
 import com.es.API_REST_Ez_Learning.specifications.TestSpecification;
@@ -36,15 +37,17 @@ public class TestService {
     private PreguntaMapper preguntaMapper;
     private TestMapper testMapper;
     private RespuestaMapper respuestaMapper;
+    private RespuestaRepository respuestaRepository;
 
     @Autowired
-    public TestService(TestRepository testRepository, RespuestaMapper respuestaMapper, PreguntaRepository preguntaRepository, TestMapper testMapper, PreguntaMapper preguntaMapper, UsuarioRepository usuarioRepository) {
+    public TestService(TestRepository testRepository, RespuestaMapper respuestaMapper, PreguntaRepository preguntaRepository, TestMapper testMapper, PreguntaMapper preguntaMapper, UsuarioRepository usuarioRepository, RespuestaRepository respuestaRepository) {
         this.testRepository = testRepository;
         this.respuestaMapper = respuestaMapper;
         this.preguntaRepository = preguntaRepository;
         this.testMapper = testMapper;
         this.preguntaMapper = preguntaMapper;
         this.usuarioRepository = usuarioRepository;
+        this.respuestaRepository = respuestaRepository;
     }
 
     public TestDTO insertTest(TestDTO testDTO, Authentication authentication){
@@ -56,8 +59,30 @@ public class TestService {
         if(testDTO.getCantidadPreguntas() > 20){
             throw new ValidationException("La cantidad de preguntas no puede exceder de 20");
         }
-        this.testRepository.save(testMapper.dtoToEntity(testDTO,creador));
-        return testDTO;
+        Test test = testMapper.dtoToEntity(testDTO,creador);
+        List<Pregunta> preguntas = new ArrayList<>();
+
+        for (PreguntaDTO preguntaDTO : testDTO.getPreguntas()) {
+            Pregunta pregunta = new Pregunta();
+            pregunta.setContenidoPregunta(preguntaDTO.getContenidoPregunta());
+
+            List<Respuesta> respuestas = new ArrayList<>();
+            for (RespuestaDTO respuestaDTO : preguntaDTO.getRespuestas()) {
+                Respuesta respuesta = new Respuesta();
+                respuesta.setContenido(respuestaDTO.getContenido());
+                respuesta.setEsCorrecta(respuestaDTO.isEsCorrecta());
+                respuesta.setPregunta(pregunta);
+                respuestas.add(respuesta);
+            }
+
+            pregunta.setRespuestas(respuestas);
+
+            preguntas.add(pregunta);
+        }
+
+        test.setPreguntas(preguntas);
+
+        return testMapper.entityToDTO(testRepository.save(test));
     }
 
     public List<TestDTO> getTests(Authentication authentication) {

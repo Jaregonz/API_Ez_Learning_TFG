@@ -18,7 +18,7 @@ public class Test {
     @Column(nullable = false)
     private String tipo;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 255)
     private String titulo;
 
     @Column(nullable = false, length = 20)
