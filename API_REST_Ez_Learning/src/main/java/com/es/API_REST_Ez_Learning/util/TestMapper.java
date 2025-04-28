@@ -48,6 +48,7 @@ public class TestMapper {
         }
 
         return new TestDTO(
+                test.getId(),
                 test.getUsuario().getId(),
                 test.getTipo(),
                 test.getTitulo(),
@@ -57,6 +58,24 @@ public class TestMapper {
                 preguntasDTO);
 
     }
+    public TestDTO entityToDTOWithId(Test test){
+        List<PreguntaDTO> preguntasDTO = new ArrayList<>();
+        for(Pregunta pregunta : test.getPreguntas()){
+            preguntasDTO.add(preguntaMapper.entityToDTO(pregunta));
+        }
+
+        return new TestDTO(
+                test.getId(),
+                test.getUsuario().getId(),
+                test.getTipo(),
+                test.getTitulo(),
+                test.getDificultad(),
+                test.getCantidadPreguntas(),
+                test.getTiempo(),
+                preguntasDTO);
+
+    }
+
     public static List<TestDTO> filtrarPorNivel(String nivelMinimo, List<TestDTO> testsDTO) {
         String nivelMinimoAjustado = (nivelMinimo == null) ? "C1" : nivelMinimo;
         if (!ORDEN_NIVELES.contains(nivelMinimo)) {

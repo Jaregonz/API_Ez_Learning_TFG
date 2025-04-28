@@ -98,7 +98,7 @@ public class TestService {
         }else{
             List<TestDTO> testsDTOs = new ArrayList<>();
             for(Test test: this.testRepository.findAll()){
-                testsDTOs.add(testMapper.entityToDTO(test));
+                testsDTOs.add(testMapper.entityToDTOWithId(test));
             }
             return TestMapper.filtrarPorNivel(usuario.getNivel(),testsDTOs);
 
@@ -136,7 +136,6 @@ public class TestService {
                                 Pregunta pregunta = preguntaExistente.get();
                                 pregunta.setContenidoPregunta(preguntaDTO.getContenidoPregunta());
 
-                                // ACTUALIZAR RESPUESTAS
                                 List<Respuesta> respuestasActualizadas = new ArrayList<>();
                                 for (RespuestaDTO respuestaDTO : preguntaDTO.getRespuestas()) {
                                     respuestasActualizadas.add(respuestaMapper.dtoToEntity(respuestaDTO));
@@ -146,7 +145,6 @@ public class TestService {
                                 preguntas.add(pregunta);
                             }
                         } else {
-                            // Si no tiene ID, es una nueva pregunta y se debe crear
                             Pregunta nuevaPregunta = preguntaMapper.dtoToEntity(preguntaDTO);
                             this.preguntaRepository.save(nuevaPregunta);
                             preguntas.add(nuevaPregunta);
@@ -157,7 +155,6 @@ public class TestService {
                     test.getPreguntas().addAll(preguntas);
                 }
 
-                // Resto de validaciones y actualizaciones
                 if (testDTO.getTitulo() != null) {
                     test.setTitulo(testDTO.getTitulo());
                 }

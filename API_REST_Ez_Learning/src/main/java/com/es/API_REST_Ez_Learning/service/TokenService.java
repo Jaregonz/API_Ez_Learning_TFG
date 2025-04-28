@@ -20,6 +20,7 @@ public class TokenService {
     private JwtEncoder jwtEncoder;
 
     public String generateToken(Authentication authentication) {
+
         Instant now = Instant.now();
 
         List<String> roles = authentication.getAuthorities().stream()

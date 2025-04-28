@@ -6,6 +6,7 @@ import com.es.API_REST_Ez_Learning.model.Usuario;
 import java.util.List;
 
 public class TestDTO {
+    private Long id;
     private Long usuarioId;
     private String tipo;
     private String titulo;
@@ -24,9 +25,25 @@ public class TestDTO {
         this.preguntas = preguntas;
     }
 
-    public TestDTO() {
+    public TestDTO(Long id, Long usuarioId, String tipo, String titulo, String dificultad, int cantidadPreguntas, int tiempo, List<PreguntaDTO> preguntas) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.tipo = tipo;
+        this.titulo = titulo;
+        this.dificultad = dificultad;
+        this.cantidadPreguntas = cantidadPreguntas;
+        this.tiempo = tiempo;
+        this.preguntas = preguntas;
     }
 
+    public TestDTO() {
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public Long getUsuario() {
         return usuarioId;
     }

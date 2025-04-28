@@ -3,9 +3,9 @@ package com.es.API_REST_Ez_Learning.dto;
 public class PuntuacionDTO {
     private Long idUsuario;
     private Long idTest;
-    private Integer puntuacion;
+    private String puntuacion;
 
-    public PuntuacionDTO(Long idUsuario, Long idTest, Integer puntuacion) {
+    public PuntuacionDTO(Long idUsuario, Long idTest, String puntuacion) {
         this.idUsuario = idUsuario;
         this.idTest = idTest;
         this.puntuacion = puntuacion;
@@ -27,11 +27,11 @@ public class PuntuacionDTO {
         this.idTest = idTest;
     }
 
-    public Integer getPuntuacion() {
+    public String getPuntuacion() {
         return puntuacion;
     }
 
-    public void setPuntuacion(Integer puntuacion) {
+    public void setPuntuacion(String puntuacion) {
         this.puntuacion = puntuacion;
     }
 }

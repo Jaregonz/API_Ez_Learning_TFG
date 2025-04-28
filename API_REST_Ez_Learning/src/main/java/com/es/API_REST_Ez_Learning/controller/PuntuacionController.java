@@ -26,7 +26,7 @@ public class PuntuacionController {
         return new ResponseEntity<List<PuntuacionDTO>>(puntuacionService.findByUsuarioId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping("/submit-puntuacion")
     public ResponseEntity<PuntuacionDTO> createPuntuacion(@RequestBody PuntuacionDTO puntuacionDTO) {
         PuntuacionDTO createdPuntuacion = puntuacionService.createPuntuacion(puntuacionDTO);
         return new ResponseEntity<>(createdPuntuacion, HttpStatus.CREATED);

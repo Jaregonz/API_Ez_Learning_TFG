@@ -22,12 +22,12 @@ public class Puntuacion {
     private Test test;
 
     @Column(nullable = false)
-    private int puntuacion;
+    private String puntuacion;
 
     public Puntuacion() {
     }
 
-    public Puntuacion(Usuario usuario, Test test, int puntuacion) {
+    public Puntuacion(Usuario usuario, Test test, String puntuacion) {
         this.usuario = usuario;
         this.test = test;
         this.puntuacion = puntuacion;
@@ -57,11 +57,11 @@ public class Puntuacion {
         this.test = test;
     }
 
-    public int getPuntuacion() {
+    public String getPuntuacion() {
         return puntuacion;
     }
 
-    public void setPuntuacion(int puntuacion) {
+    public void setPuntuacion(String puntuacion) {
         this.puntuacion = puntuacion;
     }
 }
