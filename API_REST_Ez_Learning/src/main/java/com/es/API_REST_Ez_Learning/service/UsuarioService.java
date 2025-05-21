@@ -33,11 +33,9 @@ public class UsuarioService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //BUSCO EL USUARIO POR SU NOMBRE EN A BDD
         Usuario usuario =  usuarioRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        //RETORNAMOS UN USERDETAILS
         UserDetails userDetails = User
                 .builder()
                 .username(usuario.getUsername())
@@ -106,13 +104,12 @@ public class UsuarioService implements UserDetailsService {
     public UsuarioDTO modifyUsuario(String id, UsuarioModifyDTO usuarioModifyDTO) {
         Long idLong = Long.parseLong(id);
         Usuario usuario =  this.usuarioRepository.findById(idLong).get();
-        if(usuarioModifyDTO.getUsername() != null ){
-            usuario.setUsername(usuarioModifyDTO.getUsername());
-        }
         if(usuarioModifyDTO.getCorreoElectronico() != null ){
             if(!Validators.isValidEmail(usuarioModifyDTO.getCorreoElectronico())){
                 throw new ValidationException("El email que desea introducir no es válido");
             }
+            //Para el login, se usa como username el correo electrónico
+            usuario.setUsername(usuarioModifyDTO.getCorreoElectronico());
             usuario.setCorreoElectronico(usuarioModifyDTO.getCorreoElectronico());
         }
         if(usuarioModifyDTO.getNombre() != null ){
@@ -120,12 +117,6 @@ public class UsuarioService implements UserDetailsService {
         }
         if(usuarioModifyDTO.getApellidos() != null ){
             usuario.setApellidos(usuarioModifyDTO.getApellidos());
-        }
-        if(usuarioModifyDTO.getNivel() != null ){
-            usuario.setNivel(usuarioModifyDTO.getNivel());
-        }
-        if(usuarioModifyDTO.getRol() != null ){
-            usuario.setRol(usuarioModifyDTO.getRol());
         }
         if(usuarioModifyDTO.getImagenPerfil() != null ){
             usuario.setImagenPerfil(usuarioModifyDTO.getImagenPerfil());

@@ -68,7 +68,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> deleteUsuario(@PathVariable String id, @RequestBody UsuarioModifyDTO usuarioModifyDTO){
+    public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable String id, @RequestBody UsuarioModifyDTO usuarioModifyDTO){
         return new ResponseEntity<>(this.usuarioService.modifyUsuario(id,usuarioModifyDTO), HttpStatus.OK);
 
     }
