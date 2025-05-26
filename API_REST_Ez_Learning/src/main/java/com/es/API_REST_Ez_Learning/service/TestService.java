@@ -88,7 +88,7 @@ public class TestService {
     public List<TestDTO> getTests(Authentication authentication) {
         String rol = authentication.getAuthorities().stream().findFirst().toString();
         Usuario usuario = this.usuarioRepository.findByUsername(authentication.getName()).get();
-        if(rol.equalsIgnoreCase("role_profesor")){
+        if(rol.toLowerCase().contains("role_profesor")){
             List<TestDTO> testsDTOs = new ArrayList<>();
             for(Test test: this.testRepository.findAll()){
                 testsDTOs.add(testMapper.entityToDTO(test));

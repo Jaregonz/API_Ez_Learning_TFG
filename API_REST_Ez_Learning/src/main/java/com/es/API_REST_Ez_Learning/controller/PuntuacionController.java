@@ -2,6 +2,7 @@ package com.es.API_REST_Ez_Learning.controller;
 
 import com.es.API_REST_Ez_Learning.dto.PreguntaDTO;
 import com.es.API_REST_Ez_Learning.dto.PuntuacionDTO;
+import com.es.API_REST_Ez_Learning.dto.PuntuacionProfileDTO;
 import com.es.API_REST_Ez_Learning.service.PuntuacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class PuntuacionController {
     }
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<PuntuacionDTO>> findByUsuarioId(@PathVariable Long id) {
-        return new ResponseEntity<List<PuntuacionDTO>>(puntuacionService.findByUsuarioId(id), HttpStatus.OK);
+    public ResponseEntity<List<PuntuacionProfileDTO>> findByUsuarioId(@PathVariable Long id) {
+        return new ResponseEntity<List<PuntuacionProfileDTO>>(puntuacionService.findByUsuarioId(id), HttpStatus.OK);
     }
 
     @PostMapping("/submit-puntuacion")

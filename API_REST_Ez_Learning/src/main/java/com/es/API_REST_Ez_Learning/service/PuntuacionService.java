@@ -1,6 +1,8 @@
 package com.es.API_REST_Ez_Learning.service;
 
 import com.es.API_REST_Ez_Learning.dto.PuntuacionDTO;
+import com.es.API_REST_Ez_Learning.dto.PuntuacionProfileDTO;
+import com.es.API_REST_Ez_Learning.dto.TestDTO;
 import com.es.API_REST_Ez_Learning.errors.ResourceNotFoundException;
 import com.es.API_REST_Ez_Learning.model.Puntuacion;
 import com.es.API_REST_Ez_Learning.model.Test;
@@ -11,6 +13,7 @@ import com.es.API_REST_Ez_Learning.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +37,17 @@ public class PuntuacionService {
                 .collect(Collectors.toList());
     }
 
-    public List<PuntuacionDTO> findByUsuarioId(Long usuarioId) {
-        return puntuacionRepository.findByUsuarioId(usuarioId).stream()
+    public List<PuntuacionProfileDTO> findByUsuarioId(Long usuarioId) {
+        List<PuntuacionDTO> puntuaciones = puntuacionRepository.findByUsuarioId(usuarioId).stream()
                 .map(puntuacion -> new PuntuacionDTO(puntuacion.getUsuario().getId(), puntuacion.getTest().getId(), puntuacion.getPuntuacion()))
                 .collect(Collectors.toList());
+        List<PuntuacionProfileDTO> puntuacionesPerfil = new ArrayList<>();
+        for(PuntuacionDTO puntuacion: puntuaciones){
+            Test test = this.testRepository.findById(puntuacion.getIdTest()).get();
+            PuntuacionProfileDTO puntuacionPerfil = new PuntuacionProfileDTO( puntuacion.getIdUsuario(), puntuacion.getIdTest(), puntuacion.getPuntuacion(), test.getTitulo() , test.getDificultad(), test.getTipo(), test.getCantidadPreguntas());
+            puntuacionesPerfil.add(puntuacionPerfil);
+        }
+        return puntuacionesPerfil;
     }
 
     public PuntuacionDTO createPuntuacion(PuntuacionDTO puntuacionDTO) {

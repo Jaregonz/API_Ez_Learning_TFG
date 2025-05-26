@@ -72,4 +72,10 @@ public class UsuarioController {
         return new ResponseEntity<>(this.usuarioService.modifyUsuario(id,usuarioModifyDTO), HttpStatus.OK);
 
     }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<UsuarioDTO> getById(@PathVariable String id) {
+        return new ResponseEntity<>(this.usuarioService.getById(id), HttpStatus.OK);
+    }
+
 }
