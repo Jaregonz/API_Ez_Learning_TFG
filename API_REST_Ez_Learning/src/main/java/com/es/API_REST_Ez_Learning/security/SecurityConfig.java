@@ -64,6 +64,8 @@ public class SecurityConfig {
                                 .requestMatchers("/preguntas").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.GET, "/puntuaciones/**").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/puntuaciones/{id}").hasRole("PROFESOR")
+                                .requestMatchers(HttpMethod.GET, "/examenes/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/examenes/**").hasRole("PROFESOR")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))

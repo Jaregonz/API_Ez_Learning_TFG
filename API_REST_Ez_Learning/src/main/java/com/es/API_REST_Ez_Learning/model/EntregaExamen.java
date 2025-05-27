@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Table(name = "entregas_examenes")
 public class EntregaExamen {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
