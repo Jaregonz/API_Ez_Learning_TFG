@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +50,12 @@ public class ExamenService {
         Usuario usuario = usuarioRepository.findByUsername(principal.getName()).orElseThrow();
         List<Examen> examenes = examenRepository.findAll();
         return examenes.stream()
-                .filter(e -> usuario.getRol().equals("ALUMNO") || e.getProfesor().getId().equals(usuario.getId()))
+                .filter(e -> {
+                    Long idProfesorExamen = e.getProfesor().getId();
+                    Long idUsuario = usuario.getId();
+                    return (usuario.getRol().equals("PROFESOR") && idProfesorExamen.equals(idUsuario)) ||
+                            (usuario.getProfesor() != null && idProfesorExamen.equals(usuario.getProfesor().getId()));
+                })
                 .map(e -> {
                     ExamenDTO dto = new ExamenDTO();
                     dto.setId(e.getId());
@@ -86,8 +92,19 @@ public class ExamenService {
             dto.setArchivoRespuestaRuta(e.getArchivoRespuestaRuta());
             dto.setComentario(e.getComentario());
             dto.setAprobado(e.getAprobado());
+            dto.setExamenId(examen.getId());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public ExamenDTO verExamen(Long id, Principal principal) {
+        Examen examen = examenRepository.findById(id).orElseThrow();
+        ExamenDTO dto = new ExamenDTO();
+        dto.setId(examen.getId());
+        dto.setTitulo(examen.getTitulo());
+        dto.setArchivoRuta(examen.getArchivoRuta());
+        dto.setFechaCierre(examen.getFechaCierre());
+        return dto;
     }
 
     public void corregirEntrega(Long id, EntregaFeedbackDTO dto) {
@@ -97,12 +114,22 @@ public class ExamenService {
         entregaRepository.save(entrega);
     }
 
-    public EntregaFeedbackDTO verFeedback(Long examenId, Principal principal) {
-        Usuario alumno = usuarioRepository.findByUsername(principal.getName()).orElseThrow();
-        EntregaExamen entrega = entregaRepository.findByExamenIdAndAlumnoId(examenId, alumno.getId()).orElseThrow();
-        EntregaFeedbackDTO dto = new EntregaFeedbackDTO();
-        dto.setComentario(entrega.getComentario());
-        dto.setAprobado(entrega.getAprobado());
-        return dto;
+    public EntregaDTO verEntregaAlumno(Long examenId,Long idAlumno, Principal principal) {
+        Examen examen = examenRepository.findById(examenId).orElseThrow();
+        EntregaDTO entregaDTO = new EntregaDTO();
+        Optional<EntregaExamen> entregaAlumnoOptional = entregaRepository.findByExamenIdAndAlumnoId(examenId,idAlumno);
+        if (entregaAlumnoOptional.isEmpty()) {
+            entregaDTO = null;
+        }else{
+            EntregaExamen entregaAlumno = entregaAlumnoOptional.get();
+            entregaDTO.setId(entregaAlumno.getId());
+            entregaDTO.setAlumnoNombre(entregaAlumno.getAlumno().getNombre() + " " + entregaAlumno.getAlumno().getApellidos());
+            entregaDTO.setArchivoRespuestaRuta(entregaAlumno.getArchivoRespuestaRuta());
+            entregaDTO.setComentario(entregaAlumno.getComentario());
+            entregaDTO.setAprobado(entregaAlumno.getAprobado());
+        }
+
+
+        return entregaDTO;
     }
 }

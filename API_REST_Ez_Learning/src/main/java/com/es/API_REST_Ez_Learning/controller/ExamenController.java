@@ -45,8 +45,18 @@ public class ExamenController {
     }
 
     @GetMapping("/{id}/entregas")
-    public List<EntregaDTO> verEntregas(@PathVariable Long id, Principal principal) {
+    public List<EntregaDTO> verEntregash (@PathVariable Long id, Principal principal) {
         return examenService.verEntregas(id, principal);
+    }
+
+    @GetMapping("/{id}")
+    public ExamenDTO verExamen(@PathVariable Long id, Principal principal) {
+        return examenService.verExamen(id, principal);
+    }
+
+    @GetMapping("/entrega-examen/{idExamen}/{idAlumno}")
+    public EntregaDTO verEntregaAlumno(@PathVariable Long idExamen,@PathVariable Long idAlumno, Principal principal) {
+        return examenService.verEntregaAlumno(idExamen,idAlumno, principal);
     }
 
     @PutMapping("/entregas/{id}")
@@ -56,8 +66,4 @@ public class ExamenController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/feedback")
-    public EntregaFeedbackDTO verFeedback(@PathVariable Long id, Principal principal) {
-        return examenService.verFeedback(id, principal);
-    }
 }
