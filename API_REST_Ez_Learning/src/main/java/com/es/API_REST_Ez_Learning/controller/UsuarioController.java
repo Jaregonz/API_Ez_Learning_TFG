@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -76,6 +78,11 @@ public class UsuarioController {
     @GetMapping("/id/{id}")
     public ResponseEntity<UsuarioDTO> getById(@PathVariable String id) {
         return new ResponseEntity<>(this.usuarioService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/profesores")
+    public ResponseEntity<List<UsuarioDTO>> getProfesores(Authentication authentication) {
+        return new ResponseEntity<List<UsuarioDTO>>(this.usuarioService.getProfesores(), HttpStatus.OK);
     }
 
 }

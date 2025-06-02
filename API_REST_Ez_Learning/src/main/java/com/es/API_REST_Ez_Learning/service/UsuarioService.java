@@ -148,5 +148,13 @@ public class UsuarioService implements UserDetailsService {
 
         return UsuarioMapper.entityToDTO(usuario);
     }
+
+    public List<UsuarioDTO> getProfesores() {
+        List<Usuario> profesores = this.usuarioRepository.findByProfesorId(null);
+        if(profesores.isEmpty()){
+            throw new ResourceNotFoundException("No se han encontrado profesores");
+        }
+        return profesores.stream().map(UsuarioMapper::entityToDTO).collect(Collectors.toList());
+    }
 }
 
