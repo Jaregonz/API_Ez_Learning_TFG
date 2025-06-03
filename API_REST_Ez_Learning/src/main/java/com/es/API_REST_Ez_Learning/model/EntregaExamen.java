@@ -12,6 +12,7 @@ public class EntregaExamen {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "alumno_id", nullable = false)
     private Usuario alumno;
 
     @ManyToOne(optional = false)

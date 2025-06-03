@@ -32,18 +32,6 @@ public class SecurityConfig {
     @Autowired
     private RsaKeyProperties rsaKeys;
 
-    /**
-     * BEAN QUE ESTABLECE EL SECURITY FILTER CHAIN
-     * Método que establece una serie de filtros de seguridad para nuestra API
-     * ¿Para qué sirve este método?
-     * Este método sirve para establecer los filtros de seguridad que las peticiones deberán cumplir antes de
-     * llegar al endpoint al que se dirijan
-     * <p>
-     * request ------> filtro1 -> filtro2 -> filtro3 ... -> endpoint
-     * <p>
-     * Por así decirlo, al cargar la aplicación, Spring Security coge lo que tengamos aquí definido y lo "pone"
-     * delante de nuestra app a modo de filtros de seguridad. Esto lo hace automáticamente.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 

@@ -6,13 +6,15 @@ public class UsuarioModifyDTO {
     private String apellidos;
     private String imagenPerfil;
     private String fechaNacimiento;
+    private String nivel;
 
-    public UsuarioModifyDTO(String correoElectronico, String nombre, String apellidos, String imagenPerfil, String fechaNacimiento) {
+    public UsuarioModifyDTO(String correoElectronico, String nombre, String apellidos, String imagenPerfil, String fechaNacimiento, String nivel) {
         this.correoElectronico = correoElectronico;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.imagenPerfil = imagenPerfil;
         this.fechaNacimiento = fechaNacimiento;
+        this.nivel = nivel;
     }
 
     public String getCorreoElectronico() {
@@ -52,6 +54,12 @@ public class UsuarioModifyDTO {
     }
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+    public String getNivel() {
+        return nivel;
+    }
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 }
 

@@ -91,14 +91,18 @@ public class TestService {
         if(rol.toLowerCase().contains("role_profesor")){
             List<TestDTO> testsDTOs = new ArrayList<>();
             for(Test test: this.testRepository.findAll()){
-                testsDTOs.add(testMapper.entityToDTO(test));
+                if(test.getUsuario().getId().equals(usuario.getId())){
+                    testsDTOs.add(testMapper.entityToDTOWithId(test));
+                }
             }
             return testsDTOs;
 
         }else{
             List<TestDTO> testsDTOs = new ArrayList<>();
             for(Test test: this.testRepository.findAll()){
-                testsDTOs.add(testMapper.entityToDTOWithId(test));
+                if(test.getUsuario().getId().equals(usuario.getProfesor().getId())){
+                    testsDTOs.add(testMapper.entityToDTOWithId(test));
+                }
             }
             return TestMapper.filtrarPorNivel(usuario.getNivel(),testsDTOs);
 

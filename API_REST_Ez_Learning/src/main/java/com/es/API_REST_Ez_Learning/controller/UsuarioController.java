@@ -85,4 +85,9 @@ public class UsuarioController {
         return new ResponseEntity<List<UsuarioDTO>>(this.usuarioService.getProfesores(), HttpStatus.OK);
     }
 
+    @GetMapping("/profesor/{idProfesor}/alumnos")
+    public List<UsuarioDTO> getAlumnosDelProfesor(@PathVariable Long idProfesor) {
+        return usuarioService.getAlumnosDelProfesor(idProfesor);
+    }
+
 }

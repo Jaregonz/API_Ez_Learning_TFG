@@ -126,6 +126,9 @@ public class UsuarioService implements UserDetailsService {
             Date fechaNacimiento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             usuario.setFechaNacimiento(fechaNacimiento);
         }
+        if(usuarioModifyDTO.getNivel() != null){
+            usuario.setNivel(usuarioModifyDTO.getNivel());
+        }
         return UsuarioMapper.entityToDTO(this.usuarioRepository.save(usuario));
     }
 
@@ -155,6 +158,18 @@ public class UsuarioService implements UserDetailsService {
             throw new ResourceNotFoundException("No se han encontrado profesores");
         }
         return profesores.stream().map(UsuarioMapper::entityToDTO).collect(Collectors.toList());
+    }
+
+    public List<UsuarioDTO> getAlumnosDelProfesor(Long idProfesor) {
+        Optional<Usuario> profesor = usuarioRepository.findById(idProfesor);
+        if (profesor.isEmpty() || !profesor.get().getRol().equalsIgnoreCase("PROFESOR")) {
+            throw new ResourceNotFoundException("Profesor no encontrado");
+        }
+        List<Usuario> alumnos = usuarioRepository.findByProfesorId(idProfesor);
+        if (alumnos.isEmpty()) {
+            throw new ResourceNotFoundException("No se han encontrado alumnos para el profesor indicado");
+        }
+        return alumnos.stream().map(UsuarioMapper::entityToDTO).collect(Collectors.toList());
     }
 }
 

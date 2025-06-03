@@ -49,6 +49,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Test> tests;
 
+    @OneToMany(mappedBy = "alumno", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<EntregaExamen> entregasExamen;
+
     public Usuario(String username, String correoElectronico, String password, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Usuario profesor, Date fechaNacimiento) {
         this.username = username;
         this.correoElectronico = correoElectronico;
