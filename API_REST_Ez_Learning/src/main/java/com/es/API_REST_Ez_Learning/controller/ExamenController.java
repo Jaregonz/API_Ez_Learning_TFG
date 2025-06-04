@@ -45,7 +45,7 @@ public class ExamenController {
     }
 
     @GetMapping("/{id}/entregas")
-    public List<EntregaDTO> verEntregash (@PathVariable Long id, Principal principal) {
+    public List<EntregaDTO> verEntregas (@PathVariable Long id, Principal principal) {
         return examenService.verEntregas(id, principal);
     }
 

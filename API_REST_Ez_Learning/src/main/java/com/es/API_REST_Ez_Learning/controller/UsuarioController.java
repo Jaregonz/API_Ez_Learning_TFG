@@ -9,11 +9,13 @@ import com.es.API_REST_Ez_Learning.service.TokenService;
 import com.es.API_REST_Ez_Learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,11 +40,18 @@ public class UsuarioController {
         return token;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UsuarioRegistroDTO> register(
-            @RequestBody UsuarioRegistroDTO usuarioRegisterDTO) {
-        UsuarioRegistroDTO newUsuario = usuarioService.registerUser(usuarioRegisterDTO);
-        return new ResponseEntity<UsuarioRegistroDTO>(newUsuario, HttpStatus.CREATED);
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registrarUsuario(
+            @ModelAttribute UsuarioRegistroDTO usuarioDTO,
+            @RequestParam(value = "imagenPerfil", required = false) MultipartFile imagenPerfil) {
+
+        try {
+            usuarioService.registerUser(usuarioDTO, imagenPerfil);
+            return ResponseEntity.ok("Usuario registrado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al registrar usuario: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{username}")

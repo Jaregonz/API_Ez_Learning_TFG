@@ -14,13 +14,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -30,6 +38,8 @@ public class UsuarioService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioMapper usuarioMapper;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,21 +55,29 @@ public class UsuarioService implements UserDetailsService {
         return userDetails;
     }
 
-    public UsuarioRegistroDTO registerUser(UsuarioRegistroDTO usuario){
-        if(!Validators.isValidPassword(usuario.getPassword())){
+    public UsuarioRegistroDTO registerUser(UsuarioRegistroDTO usuario, MultipartFile imagenPerfil) {
+        if (!Validators.isValidPassword(usuario.getPassword())) {
             throw new ValidationException("La contraseña no es válida");
         }
-        if(!Validators.isValidEmail(usuario.getCorreoElectronico())){
+        if (!Validators.isValidEmail(usuario.getCorreoElectronico())) {
             throw new ValidationException("El email no es válido");
         }
-        if(!usuario.getRol().equals("PROFESOR") && !usuario.getRol().equals("ALUMNO")){
+        if (!usuario.getRol().equals("PROFESOR") && !usuario.getRol().equals("ALUMNO")) {
             throw new ValidationException("El Rol del usuario debe ser USUARIO o PROFESOR");
         }
-        if(usuarioRepository.findByUsername(usuario.getUsername()).isPresent()){
+        if (usuarioRepository.findByUsername(usuario.getUsername()).isPresent()) {
             throw new ConflictException("El nombre de usuario ya existe");
         }
+
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        usuarioRepository.save(usuarioMapper.dtoRegistroToEntity(usuario));
+
+        String ruta = null;
+        if (imagenPerfil != null && !imagenPerfil.isEmpty()) {
+             ruta = fileStorageService.saveFile(imagenPerfil, "imagenes_perfil");
+        }
+        Usuario entidad = usuarioMapper.dtoRegistroToEntity(usuario);
+        entidad.setImagenPerfil(ruta);
+        usuarioRepository.save(entidad);
         return usuario;
     }
 

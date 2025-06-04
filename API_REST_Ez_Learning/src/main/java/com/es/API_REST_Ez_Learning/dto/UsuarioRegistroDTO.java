@@ -11,11 +11,10 @@ public class UsuarioRegistroDTO {
     private String apellidos;
     private String nivel;
     private String rol;
-    private String imagenPerfil;
     private Long idProfesor;
     private String fechaNacimiento;
 
-    public UsuarioRegistroDTO(String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, String imagenPerfil, Long idProfesor, String fechaNacimiento) {
+    public UsuarioRegistroDTO(String username, String password, String correoElectronico, String nombre, String apellidos, String nivel, String rol, Long idProfesor, String fechaNacimiento) {
         this.username = username;
         this.password = password;
         this.correoElectronico = correoElectronico;
@@ -23,7 +22,6 @@ public class UsuarioRegistroDTO {
         this.apellidos = apellidos;
         this.nivel = nivel;
         this.rol = rol;
-        this.imagenPerfil = imagenPerfil;
         this.idProfesor = idProfesor;
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -82,14 +80,6 @@ public class UsuarioRegistroDTO {
 
     public void setRol(String rol) {
         this.rol = rol;
-    }
-
-    public String getImagenPerfil() {
-        return imagenPerfil;
-    }
-
-    public void setImagenPerfil(String imagenPerfil) {
-        this.imagenPerfil = imagenPerfil;
     }
 
     public Long getIdProfesor() {

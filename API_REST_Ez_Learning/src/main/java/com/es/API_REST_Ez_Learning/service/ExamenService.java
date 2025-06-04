@@ -37,7 +37,7 @@ public class ExamenService {
 
     public void crearExamen(String titulo, LocalDate fechaCierre, MultipartFile archivo, Principal principal) {
         Usuario profesor = usuarioRepository.findByUsername(principal.getName()).orElseThrow();
-        String archivoRuta = fileStorageService.saveFile(archivo);
+        String archivoRuta = fileStorageService.saveFile(archivo, "examen");
         Examen examen = new Examen();
         examen.setTitulo(titulo);
         examen.setFechaCierre(fechaCierre);
@@ -74,7 +74,7 @@ public class ExamenService {
         }
         EntregaExamen entrega = entregaRepository.findByExamenIdAndAlumnoId(examenId, alumno.getId())
                 .orElse(new EntregaExamen());
-        String ruta = fileStorageService.saveFile(archivo);
+        String ruta = fileStorageService.saveFile(archivo, "entregas");
         entrega.setArchivoRespuestaRuta(ruta);
         entrega.setExamen(examen);
         entrega.setAlumno(alumno);

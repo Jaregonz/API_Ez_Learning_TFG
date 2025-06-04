@@ -32,7 +32,7 @@ public class UsuarioMapper {
                 usuarioRegistroDTO.getApellidos(),
                 usuarioRegistroDTO.getNivel(),
                 usuarioRegistroDTO.getRol(),
-                usuarioRegistroDTO.getImagenPerfil(),
+                null,
                 profesor,
                 fechaNacimiento);
     }

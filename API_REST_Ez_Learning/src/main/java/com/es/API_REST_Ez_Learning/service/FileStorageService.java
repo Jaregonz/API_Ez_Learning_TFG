@@ -18,12 +18,17 @@ public class FileStorageService {
         Files.createDirectories(root);
     }
 
-    public String saveFile(MultipartFile file) {
+    public String saveFile(MultipartFile file, String subdirectory) {
         try {
+            Path subDirPath = root.resolve(subdirectory);
+            Files.createDirectories(subDirPath);
+
             String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path path = root.resolve(filename);
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            return "/uploads/" + filename;
+
+            Path filePath = subDirPath.resolve(filename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return "/uploads/" + subdirectory + "/" + filename;
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el archivo", e);
         }
