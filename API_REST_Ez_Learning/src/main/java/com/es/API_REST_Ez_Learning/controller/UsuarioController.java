@@ -78,10 +78,15 @@ public class UsuarioController {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable String id, @RequestBody UsuarioModifyDTO usuarioModifyDTO){
-        return new ResponseEntity<>(this.usuarioService.modifyUsuario(id,usuarioModifyDTO), HttpStatus.OK);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UsuarioDTO> updateUsuario(
+            @PathVariable String id,
+            @ModelAttribute UsuarioModifyDTO usuarioModifyDTO,
+            @RequestParam(value = "imagenPerfil", required = false) MultipartFile imagenPerfil
+    ) {
 
+        UsuarioDTO actualizado = usuarioService.modifyUsuario(id, usuarioModifyDTO, imagenPerfil);
+        return ResponseEntity.ok(actualizado);
     }
 
     @GetMapping("/id/{id}")

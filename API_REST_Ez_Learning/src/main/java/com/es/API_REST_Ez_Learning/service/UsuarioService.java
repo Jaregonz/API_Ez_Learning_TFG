@@ -119,34 +119,56 @@ public class UsuarioService implements UserDetailsService {
 
     }
 
-    public UsuarioDTO modifyUsuario(String id, UsuarioModifyDTO usuarioModifyDTO) {
+    public UsuarioDTO modifyUsuario(String id, UsuarioModifyDTO usuarioModifyDTO, MultipartFile imagenPerfil) {
         Long idLong = Long.parseLong(id);
-        Usuario usuario =  this.usuarioRepository.findById(idLong).get();
-        if(usuarioModifyDTO.getCorreoElectronico() != null ){
-            if(!Validators.isValidEmail(usuarioModifyDTO.getCorreoElectronico())){
+        Usuario usuario = this.usuarioRepository.findById(idLong)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuarioModifyDTO.getCorreoElectronico() != null) {
+            if (!Validators.isValidEmail(usuarioModifyDTO.getCorreoElectronico())) {
                 throw new ValidationException("El email que desea introducir no es válido");
             }
-            //Para el login, se usa como username el correo electrónico
             usuario.setUsername(usuarioModifyDTO.getCorreoElectronico());
             usuario.setCorreoElectronico(usuarioModifyDTO.getCorreoElectronico());
         }
-        if(usuarioModifyDTO.getNombre() != null ){
+
+        if (usuarioModifyDTO.getNombre() != null) {
             usuario.setNombre(usuarioModifyDTO.getNombre());
         }
-        if(usuarioModifyDTO.getApellidos() != null ){
+
+        if (usuarioModifyDTO.getApellidos() != null) {
             usuario.setApellidos(usuarioModifyDTO.getApellidos());
         }
-        if(usuarioModifyDTO.getImagenPerfil() != null ){
-            usuario.setImagenPerfil(usuarioModifyDTO.getImagenPerfil());
-        }
-        if(usuarioModifyDTO.getFechaNacimiento() != null ){
+
+        if (usuarioModifyDTO.getFechaNacimiento() != null) {
             LocalDate localDate = LocalDate.parse(usuarioModifyDTO.getFechaNacimiento());
             Date fechaNacimiento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             usuario.setFechaNacimiento(fechaNacimiento);
         }
-        if(usuarioModifyDTO.getNivel() != null){
+
+        if (usuarioModifyDTO.getNivel() != null) {
             usuario.setNivel(usuarioModifyDTO.getNivel());
         }
+
+        if (imagenPerfil != null && !imagenPerfil.isEmpty()) {
+            try {
+                // Eliminar imagen anterior si existe
+                if (usuario.getImagenPerfil() != null && !usuario.getImagenPerfil().isBlank()) {
+                    Path previous = Paths.get("uploads", usuario.getImagenPerfil().replace("/uploads/", ""));
+                    Files.deleteIfExists(previous);
+                }
+
+                // Guardar nueva imagen
+
+                String nuevoNombre = fileStorageService.saveFile(imagenPerfil, "imagenes_perfil");
+
+                usuario.setImagenPerfil(nuevoNombre);
+
+            } catch (IOException e) {
+                throw new RuntimeException("Error al guardar la nueva imagen", e);
+            }
+        }
+
         return UsuarioMapper.entityToDTO(this.usuarioRepository.save(usuario));
     }
 
