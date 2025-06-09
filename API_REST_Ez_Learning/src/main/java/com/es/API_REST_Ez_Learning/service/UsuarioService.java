@@ -110,6 +110,10 @@ public class UsuarioService implements UserDetailsService {
         try{
             Long idLong = Long.parseLong(id);
             Usuario usuario = this.usuarioRepository.findById(idLong).get();
+            if (usuario.getImagenPerfil() != null && !usuario.getImagenPerfil().isBlank()) {
+                Path previous = Paths.get("uploads", usuario.getImagenPerfil().replace("/uploads/", ""));
+                Files.deleteIfExists(previous);
+            }
             this.usuarioRepository.delete(usuario);
             return UsuarioMapper.entityToDTO(usuario);
         } catch (Exception e) {
