@@ -13,6 +13,7 @@ public class EntregaDTO {
     }
 
     public EntregaDTO(Long id, String alumnoNombre, String archivoRespuestaRuta, String comentario, Boolean aprobado, Long examenId, Long idAlumno) {
+        this.id = id;
         this.alumnoNombre = alumnoNombre;
         this.archivoRespuestaRuta = archivoRespuestaRuta;
         this.comentario = comentario;
