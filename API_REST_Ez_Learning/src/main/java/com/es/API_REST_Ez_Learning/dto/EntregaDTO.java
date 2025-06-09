@@ -3,6 +3,7 @@ package com.es.API_REST_Ez_Learning.dto;
 public class EntregaDTO {
     private Long id;
     private Long examenId;
+    private Long idAlumno;
     private String alumnoNombre;
     private String archivoRespuestaRuta;
     private String comentario;
@@ -11,13 +12,13 @@ public class EntregaDTO {
     public EntregaDTO() {
     }
 
-    public EntregaDTO(Long id, String alumnoNombre, String archivoRespuestaRuta, String comentario, Boolean aprobado, Long examenId) {
-        this.id = id;
+    public EntregaDTO(Long id, String alumnoNombre, String archivoRespuestaRuta, String comentario, Boolean aprobado, Long examenId, Long idAlumno) {
         this.alumnoNombre = alumnoNombre;
         this.archivoRespuestaRuta = archivoRespuestaRuta;
         this.comentario = comentario;
         this.aprobado = aprobado;
         this.examenId = examenId;
+        this.idAlumno = idAlumno;
     }
 
     public Long getId() {
@@ -66,5 +67,11 @@ public class EntregaDTO {
 
     public void setExamenId(Long examenId) {
         this.examenId = examenId;
+    }
+    public Long getIdAlumno() {
+        return idAlumno;
+    }
+    public void setIdAlumno(Long idAlumno) {
+        this.idAlumno = idAlumno;
     }
 }

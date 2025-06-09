@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,18 +85,42 @@ public class ExamenService {
 
     public List<EntregaDTO> verEntregas(Long examenId, Principal principal) {
         Examen examen = examenRepository.findById(examenId).orElseThrow();
+        Usuario profesor = usuarioRepository.findByUsername(principal.getName()).orElseThrow();
+        List<Usuario> alumnos = usuarioRepository.findByProfesorId(profesor.getId());
         List<EntregaExamen> entregas = entregaRepository.findByExamenId(examenId);
-        return entregas.stream().map(e -> {
-            EntregaDTO dto = new EntregaDTO();
-            dto.setId(e.getId());
-            dto.setAlumnoNombre(e.getAlumno().getNombre() + " " + e.getAlumno().getApellidos());
-            dto.setArchivoRespuestaRuta(e.getArchivoRespuestaRuta());
-            dto.setComentario(e.getComentario());
-            dto.setAprobado(e.getAprobado());
-            dto.setExamenId(examen.getId());
-            return dto;
-        }).collect(Collectors.toList());
+        List<EntregaDTO> resultado = new ArrayList<>();
+
+        for (Usuario alumno : alumnos) {
+            Optional<EntregaExamen> entregaOpt = entregas.stream()
+                    .filter(e -> e.getAlumno().getId().equals(alumno.getId()))
+                    .findFirst();
+            if (entregaOpt.isPresent()) {
+                EntregaExamen e = entregaOpt.get();
+                resultado.add(new EntregaDTO(
+                        e.getId(),
+                        alumno.getNombre() + " " + alumno.getApellidos(),
+                        e.getArchivoRespuestaRuta(),
+                        e.getComentario(),
+                        e.getAprobado(),
+                        examen.getId(),
+                        alumno.getId()
+                ));
+            } else {
+                resultado.add(new EntregaDTO(
+                        null,
+                        alumno.getNombre() + " " + alumno.getApellidos(),
+                        null,
+                        null,
+                        null,
+                        examen.getId(),
+                        alumno.getId()
+                ));
+            }
+        }
+
+        return resultado;
     }
+
 
     public ExamenDTO verExamen(Long id, Principal principal) {
         Examen examen = examenRepository.findById(id).orElseThrow();
