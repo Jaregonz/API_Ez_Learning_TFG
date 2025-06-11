@@ -139,8 +139,7 @@ public class ExamenService {
         entregaRepository.save(entrega);
     }
 
-    public EntregaDTO verEntregaAlumno(Long examenId,Long idAlumno, Principal principal) {
-        Examen examen = examenRepository.findById(examenId).orElseThrow();
+    public EntregaDTO verEntregaAlumno(Long examenId,Long idAlumno) {
         EntregaDTO entregaDTO = new EntregaDTO();
         Optional<EntregaExamen> entregaAlumnoOptional = entregaRepository.findByExamenIdAndAlumnoId(examenId,idAlumno);
         if (entregaAlumnoOptional.isEmpty()) {

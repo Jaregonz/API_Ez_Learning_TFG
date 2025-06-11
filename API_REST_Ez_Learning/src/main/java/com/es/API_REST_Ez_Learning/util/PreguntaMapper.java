@@ -32,16 +32,6 @@ public class PreguntaMapper {
                 preguntaDto.getContenidoPregunta(),
                 respuestasDTO);
     }
-    public Pregunta dtoToEntityWithID(PreguntaDTO preguntaDto){
-        List<Respuesta> respuestasDTO =  new ArrayList<>();
-        for (RespuestaDTO respuestaDTO: preguntaDto.getRespuestas()) {
-            respuestasDTO.add(respuestaMapper.dtoToEntity(respuestaDTO));
-        }
-        return new Pregunta(
-                preguntaDto.getId(),
-                preguntaDto.getContenidoPregunta(),
-                respuestasDTO);
-    }
 
     public  PreguntaDTO entityToDTO(Pregunta pregunta){
         List<RespuestaDTO> respuestas =  new ArrayList<>();
