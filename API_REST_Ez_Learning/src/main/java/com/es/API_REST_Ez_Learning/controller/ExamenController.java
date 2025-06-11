@@ -55,8 +55,8 @@ public class ExamenController {
     }
 
     @GetMapping("/entrega-examen/{idExamen}/{idAlumno}")
-    public EntregaDTO verEntregaAlumno(@PathVariable Long idExamen,@PathVariable Long idAlumno, Principal principal) {
-        return examenService.verEntregaAlumno(idExamen,idAlumno, principal);
+    public EntregaDTO verEntregaAlumno(@PathVariable Long idExamen,@PathVariable Long idAlumno) {
+        return examenService.verEntregaAlumno(idExamen,idAlumno);
     }
 
     @PutMapping("/entregas/{id}")
