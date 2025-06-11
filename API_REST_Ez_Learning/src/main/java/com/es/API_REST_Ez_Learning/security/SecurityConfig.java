@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/usuarios/login", "/usuarios/register", "/usuarios/profesores").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/usuarios/{nombre}").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/usuarios/perfil-usuario").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/tests/").hasRole("PROFESOR")
