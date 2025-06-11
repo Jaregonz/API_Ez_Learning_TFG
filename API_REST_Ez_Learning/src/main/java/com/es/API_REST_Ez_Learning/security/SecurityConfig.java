@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/usuarios/{nombre}").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/usuarios/perfil-usuario").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("PROFESOR")
-                                .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("PROFESOR")
+                                .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/tests/").hasRole("PROFESOR")
                                 .requestMatchers(HttpMethod.GET, "/tests/").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/tests/{id}").authenticated()
